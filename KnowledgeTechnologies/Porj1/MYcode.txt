@@ -1,0 +1,192 @@
+import textdistance
+
+#print(textdistance.postfix.normalized_similarity('aaaand', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaand'))
+
+def del_l(w):
+
+    w = w[:-1]
+    return w
+
+def rep(wf, ind):
+    for m in range(ind, len(wf)-1):
+
+        if m <= 1 or m >= len(wf)-3:
+            if wf[0] == wf[1]:
+                return 1
+            if wf[len(wf)-3] == wf[len(wf)-2]:
+                return 1
+
+        if m+1 >= len(wf)-2:
+                return 0
+
+        if wf[m] == wf[m+1]:
+            if wf[m+1] == wf[m+2]:
+                return 1
+            else:
+                return rep(wf, m+2)
+
+def s_l(wf):
+    wf = del_l(wf)
+    if wf[0] == wf[len(wf)-1]:
+        return 1
+    else:
+        return 0
+
+def spell(wf):
+        wf = del_l(wf)
+        for spl in range(0, len(dict)):       # checking the candidate work aganist the dict
+            d_f = dict[spl]
+            d_f = del_l(d_f)
+            if wf[0] == d_f[0]:  # finding the word with same first charater
+                if textdistance.prefix.normalized_similarity(wf, d_f) >= 0.3 or textdistance.postfix.normalized_similarity(wf, d_f) >= 0.3:
+                    if textdistance.jaro_winkler.similarity(wf, d_f) > 0.85:
+                        dis = textdistance.levenshtein.distance(wf, d_f)
+                        if dis == 1 or dis == -1:   # remove spelling mistakes
+                            return 1
+        return 0
+
+
+def sim_check(w1):
+    sim = 0
+    sim_0 = 0
+    sim_pre = 0
+    sim_post = 0
+    chk_1 = 0
+    chk_2 = 0
+
+    for j in range(0, len(dict)):
+        w2 = dict[j]
+        w2 = del_l(w2)
+
+        if chk_1 != 1:
+            if w1[0] == w2[0]:
+                sim_p = textdistance.prefix.similarity(w1, w2)
+                if sim_p >= 2:
+                    sim_p = textdistance.prefix.normalized_similarity(w1, w2)
+                    if sim_p > 0.5 and sim_p < 0.8:
+                        chk_1 = 1
+                    else:
+                        chk_1 = 0
+        if chk_2 != 1:
+            if w1[len(w1)-1] == w2[len(w2)-1]:
+                sim_po = textdistance.postfix.similarity(w1, w2)
+                if sim_po >= 2:
+                    sim_po = textdistance.postfix.normalized_similarity(w1, w2)
+                    if sim_po > 0.5 and sim_po < 0.8:
+                        chk_2 = 1
+                    else:
+                        chk_2 = 0
+        if chk_1 == 1 and chk_2 == 1:
+            return w1
+
+    return 0
+# ------------------------------------------------------------#
+text_file = open("candidates.txt", "r")
+candidates = text_file.readlines()
+text_file.close()
+
+text_file = open("dict.txt", "r")
+dict = text_file.readlines()
+text_file.close()
+
+text_file = open("blends.txt", "r")
+blend = text_file.readlines()
+text_file.close()
+
+# -----------------------------------------------------------#
+list = []         ## Start as the empty list
+f_candidates = []
+count = 0
+# --------------------------------------#
+for i in range(0, len(candidates)):
+    # CREATE BINS TO REDUCE TIME COMPLEXITY
+    w_f = candidates[i]
+    index = 0
+    if rep(w_f, index) == 0:    # 'aaaaaa' remove such words
+        if spell(w_f) == 0:     # one speeling error
+            if s_l(w_f) == 0:   # same last letter
+                print(w_f)
+                f_candidates.append(w_f)
+
+i = 0
+for i in range(0, len(f_candidates)):
+    sim_pre = 0
+    sim_post = 0
+    sim_p = 0
+    sim_po = 0
+    w1 = f_candidates[i]
+    w1 = del_l(w1)
+    dict_post = 0
+    dict_pre = 0
+    count = 0
+
+    w1 = sim_check(w1)
+    print('chk')
+    if w1 != 0:
+        for j in range(0, len(dict)):
+            w2 = dict[j]
+            w2 = del_l(w2)
+            if w1[0] == w2[0]:
+                sim_p = textdistance.prefix.similarity(w1, w2)
+            if w1[len(w1)-1] == w2[len(w2)-1]:
+                sim_po = textdistance.postfix.similarity(w1, w2)
+
+            if sim_p >= 1 or sim_p <= 5:
+                if sim_po >= 1 or sim_po <= 5:
+                    sim_p = textdistance.prefix.normalized_similarity(w1, w2)
+                    if sim_p >= sim_pre:
+                        sim_pre = sim_p
+                        dict_pre = j
+                    sim_po = textdistance.postfix.normalized_similarity(w1, w2)
+                    if sim_po >= sim_post:
+                        sim_post = sim_po
+                        dict_post = j
+
+        #print(w1)
+        list.append(w1)
+        #list.append(del_l(dict[dict_pre]))
+        #list.append(del_l(dict[dict_post]))
+        print(list)
+        #list.clear()
+
+# ---------------------EVALUATION--------------------------------#
+
+for i in range(0, len(blend)):
+    w = blend[i].split("\t")
+    # print(w[i])
+
+True_blend = len(blend)
+Pridicted_Blend = len(list)
+Total_words = len(candidates)
+count = 0
+
+count = 0
+for j in range(0, len(list)):
+    for i in range(0, len(blend)):
+        w = blend[i].split("\t")
+        if list[j] == w[0]:
+            count = count + 1
+
+#Accuracy
+#rightblend(count)/cadidates
+
+acc = count/Total_words
+print('Acc = ', acc)
+
+#presison
+#rightblen(count)/predic beln (list)
+
+pre = count/Pridicted_Blend
+print('Pre = ', pre)
+
+#Recall
+#right blen(count)/blend
+
+rec = count/True_blend
+print('rec = ', rec)
+
+
+
+
+
+
