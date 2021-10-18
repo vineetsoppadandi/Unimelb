@@ -1,5 +1,6 @@
 # Unimelb
-The academic projects I have completed at the University Of Melbourne. I have undertaken two subjects details as follows.
+  *   This "Unimelb" repository is to present some of the university academic projects I have completed during my Masters Education at the University of Melbourne.  
+  *   I have undertaken two subjects and for each, I have created a repo. details given below
 
 ### ProgramSoftDevel -> Project in Java
   *   Developed a medium complexity user interactive NIM game using the core JAVA concepts of encapsulation, OOP (Object Oriented Programming), inheritance and polymorphism. Delivered the project on time and achieved an 88% grade.
@@ -9,4 +10,4 @@ The academic projects I have completed at the University Of Melbourne. I have un
 ### KnowledgeTechnologies/Porj1 -> Implemented the prject in Python
   *   We had to identify lexical blend words amongst the data set provided by implementing on proven researched methods.  
   *   Required us to understand the source data, solution design, and research methodology in identifying the lexical blends and reported the finding methods based on Accuracy, Precision, and Recall. 
-  *   Based on the research I have designed and implemented a solution as per the project requirements. The project was assessed on the effectiveness of our code and research findings gathered from the project, and I earned 85% in grade.
+  *   Based on the research I have designed and implemented a solution as per the project requirements. The project was assessed on the effectiveness of our code and research findings reported gathered from the project(research report is available in the same repo. "COMP90049 Knowledge Technologies.pdf"). With my submission, I attained an 85% grade.
