@@ -8,5 +8,5 @@ My academic projects I have completed at the University Of Melbourne. I have und
 
 2. KnowledgeTechnologies/Porj1 -> Implemented the prject in Python
     * We had to identify lexical blend words amongst the data set provided by implementing on proven researched methods. 
-    * Required us to understand the source data, solution design, and research methodology in identifying the lexical blends and reported the finding  methods Accuracy, Precesion, and Recall. 
+    * Required us to understand the source data, solution design, and research methodology in identifying the lexical blends and reported the finding methods on the basis of Accuracy, Precesion, and Recall. 
     * Based on the research I designed and implemented a solution as per the project requirements. The project was assessed on the effectiveness of our code and reseach findings gathered from the project, and I earned 85% in grade.
