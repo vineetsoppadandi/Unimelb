@@ -79,7 +79,7 @@ class eta3_path_segment(object):
     def __init__(self, start_pose, end_pose, eta=None, kappa=None):
         # make sure inputs are of the correct size
         assert(len(start_pose) == 3 and len(start_pose) == len(end_pose))
-        self.start_pose = start_pose
+        self.start_pose = start_pose 
         self.end_pose = end_pose
         # if no eta is passed, initialize it to array of zeros
         if not eta:
